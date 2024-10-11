@@ -1,0 +1,3 @@
+packages:
+  ./toy-yasunori.cabal
+  ./h-raylib/h-raylib.cabal

@@ -1,0 +1,50 @@
+cabal-version:   3.4
+name:            toy-yasunori
+version:         0.1.0.0
+license:         MIT
+license-file:    LICENSE
+author:          toyboot4e
+maintainer:      toyboot4e@gmail.com
+category:        Game
+build-type:      Simple
+extra-doc-files: CHANGELOG.md
+
+common deps
+  ghc-options:      -Wall
+  build-depends:
+    , base       ^>=4.18.2.1
+    , h-raylib
+    , linear
+    , mtl
+    , primitive
+    , vector
+
+  other-extensions:
+    OverloadedStrings
+    RecordWildCards
+
+  ghc-options:      -Wall
+  default-language: GHC2021
+
+library yas
+  import:          deps
+  exposed-modules: My.Prelude
+  hs-source-dirs:  src
+
+executable toy-yasunori
+  import:           deps
+  main-is:          Main.hs
+  other-extensions:
+    OverloadedStrings
+    RecordWildCards
+
+  build-depends:
+    , base              ^>=4.18.2.1
+    , h-raylib
+    , linear
+    , mtl
+    , primitive
+    , toy-yasunori:yas
+    , vector
+
+  hs-source-dirs:   app
