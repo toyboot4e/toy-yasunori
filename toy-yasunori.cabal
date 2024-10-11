@@ -10,34 +10,39 @@ build-type:      Simple
 extra-doc-files: CHANGELOG.md
 
 common deps
-  ghc-options:      -Wall
+  ghc-options:        -Wall
   build-depends:
     , base       ^>=4.18.2.1
+    , extra
     , h-raylib
     , linear
     , mtl
     , primitive
     , vector
 
-  other-extensions:
+  default-extensions:
+    DerivingVia
     OverloadedStrings
     RecordWildCards
+    TypeFamilies
 
-  ghc-options:      -Wall
-  default-language: GHC2021
+  -- DuplicateRecordFields
+  ghc-options:        -Wall
+  default-language:   GHC2021
 
 library yas
   import:          deps
-  exposed-modules: My.Prelude
+  exposed-modules:
+    Yas.Entity.RectF
+    Yas.Entity.Vec2F
+    Yas.Game
+    Yas.Prelude
+
   hs-source-dirs:  src
 
 executable toy-yasunori
-  import:           deps
-  main-is:          Main.hs
-  other-extensions:
-    OverloadedStrings
-    RecordWildCards
-
+  import:         deps
+  main-is:        Main.hs
   build-depends:
     , base              ^>=4.18.2.1
     , h-raylib
@@ -47,4 +52,4 @@ executable toy-yasunori
     , toy-yasunori:yas
     , vector
 
-  hs-source-dirs:   app
+  hs-source-dirs: app

@@ -4,22 +4,23 @@ module Main where
 
 import Data.Vector.Generic.Mutable qualified as GM
 import Data.Vector.Unboxed.Mutable qualified as UM
-import My.Prelude
 import Raylib.Core qualified as R
+import Raylib.Core.Shapes qualified as R
 import Raylib.Core.Text qualified as R
 import Raylib.Types qualified as R
 import Raylib.Util qualified as R
 import Raylib.Util.Colors qualified as R
+import Yas.Game qualified as Game
+import Yas.Prelude
 
-data App = App
-  { countA :: !(UM.MVector RealWorld Int)
-  }
+type State = (R.WindowResources, Game.Game RealWorld)
 
-startup :: IO R.WindowResources
+startup :: IO State
 startup = do
   window <- R.initWindow w h title
+  game <- Game.init
   R.setTargetFPS fps
-  return window
+  return (window, game)
   where
     w = 1280
     h = 720
@@ -30,17 +31,19 @@ startup = do
 defaultClearColor :: R.Color
 defaultClearColor = R.Color 100 147 237 255
 
-mainLoop :: R.WindowResources -> IO R.WindowResources
-mainLoop window = do
+mainLoop :: State -> IO State
+mainLoop (!window, !game) = do
+  Game.input game
+  Game.update game
   R.drawing $ do
     R.clearBackground defaultClearColor
-    R.drawText "You should be yasunori!" 30 40 64 R.lightGray
-  return window
+    Game.draw game
+  return (window, game)
 
-shouldClose :: R.WindowResources -> IO Bool
+shouldClose :: State -> IO Bool
 shouldClose _ = R.windowShouldClose
 
-teardown :: R.WindowResources -> IO ()
-teardown = R.closeWindow . Just
+teardown :: State -> IO ()
+teardown (!window, !_) = R.closeWindow $ Just window
 
 $(R.raylibApplication 'startup 'mainLoop 'shouldClose 'teardown)
