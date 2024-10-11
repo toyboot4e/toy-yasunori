@@ -1,0 +1,3 @@
+[submodule "h-raylib"]
+	path = h-raylib
+	url = https://github.com/Anut-py/h-raylib
